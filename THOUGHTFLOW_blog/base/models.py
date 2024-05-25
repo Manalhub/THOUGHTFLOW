@@ -2,11 +2,14 @@ from django.db import models
 from django.contrib.auth.models import User
 import uuid
 
+from django.urls import reverse
+
 # Create your models here.
 class Post(models.Model):
     id = models.UUIDField(primary_key=True, max_length=15, editable=False, default=uuid.uuid4)
     title = models.CharField(max_length=250)
-    slug = models.SlugField(max_length=250, unique_for_date='created', null=True, blank=True)
+    slug = models.SlugField(max_length=300, unique_for_date='created',
+    null = True, blank=True)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     body = models.TextField()
     image = models.ImageField(upload_to='bg_img/', default='default_bg_img.jpg')
@@ -18,6 +21,9 @@ class Post(models.Model):
     def images_url(self):
         if self.image and hasattr(self.image, 'url'):
             return self.image.url
+        
+    def get_absolute_url(self):
+        return reverse('read_post', args=[str(self.id), self.slug])
 
     class Meta:
         ordering = ['-created']

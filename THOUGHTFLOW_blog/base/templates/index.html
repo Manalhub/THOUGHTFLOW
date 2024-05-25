@@ -57,9 +57,13 @@
                                     <span class="absolute -inset-1.5"></span>
                                     <span class="sr-only">Open user menu</span>
                                     {% if profile.avatar %}
-                                    <img class="h-8 w-8 rounded-full" src="{{ profile.avatar.url }}" alt="User Profile Picture" />
+                                    <img class="h-8 w-8 rounded-full"
+                                         src="{{ profile.avatar.url }}"
+                                         alt="User Profile Picture" />
                                     {% else %}
-                                    <img class="h-8 w-8 rounded-full" src="{% static 'user.jpg' %}" alt="User Profile Picture" />
+                                    <img class="h-8 w-8 rounded-full"
+                                         src="{% static 'user.jpg' %}"
+                                         alt="User Profile Picture" />
                                     {% endif %}
                                 </button>
                             </div>
@@ -114,9 +118,13 @@
                 <div class="flex items-center px-5">
                     <div class="flex-shrink-0">
                         {% if profile.avatar %}
-                        <img class="h-8 w-8 rounded-full" src="{{ profile.avatar.url }}" alt="User Profile Picture" />
+                        <img class="h-8 w-8 rounded-full"
+                             src="{{ profile.avatar.url }}"
+                             alt="User Profile Picture" />
                         {% else %}
-                        <img class="h-8 w-8 rounded-full" src="{% static 'user.jpg' %}" alt="User Profile Picture" />
+                        <img class="h-8 w-8 rounded-full"
+                             src="{% static 'user.jpg' %}"
+                             alt="User Profile Picture" />
                         {% endif %}
                     </div>
                     <div class="ml-3">
@@ -220,7 +228,7 @@
             </p>
           </div>
           <a
-            href="{{ post.get_absolute_url }}"
+            href="{% url 'read_post' post.id post.slug %}"
             class="w-fit mt-2 text-white bg-gray-800 px-3 py-1 rounded-sm"
             >Continue Reading...</a
           >

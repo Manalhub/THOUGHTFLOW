@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <title>Galaxy | All About The Artemis Lunar Mission</title>
+    <title>THOUGHTFLOW | All About The Artemis Lunar Mission</title>
   </head>
   <body class="p-4 bg-gray-200">
     <!-- Navbar -->
@@ -15,14 +15,14 @@
           <div class="flex items-center">
             <div class="flex-shrink-0">
               <a class="text-2xl font-bold text-white" href="{% url 'home' %}"
-                >Galaxy</a
+                >THOUGHTFLOW</a
               >
             </div>
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 {% if user.is_authenticated %}
                 <a
-                  href="{% url 'create_post' %}"
+                  href="create_post"
                   class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium"
                   aria-current="page"
                   >Create Post</a
@@ -142,7 +142,7 @@
         <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
           {% if user.is_authenticated %}
           <a
-            href="{% url 'create_post' %}"
+            href="create_post"
             class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
             >Create Post</a
           >
@@ -361,7 +361,7 @@
         </h2>
 
         <a
-          href="{% url 'share_post' post.id %}"
+          href="share_post"
           class="bg-emerald-500 text-white px-4 py-2 rounded-md hover:bg-emerald-600 focus:outline-none focus:ring focus:border-emerald-300"
         >
           Share Post
