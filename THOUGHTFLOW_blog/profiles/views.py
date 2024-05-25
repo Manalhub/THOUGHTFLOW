@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
 from .models import Userprofile
+from django.utils.datastructures import MultiValueDictKeyError
 
 # Create your views here.
 def user_login(request):
@@ -39,7 +40,10 @@ def register_user(request):
         about = request.POST.get('about')
         talks_about = request.POST.get('talks_about')
 
-        avatar = request.FILES['f-upload']
+        try:
+            avatar = request.FILES['f-upload']
+        except MultiValueDictKeyError:
+            avatar = None
 
         if password == passwordr:
             user = User.objects.create_user(
@@ -60,8 +64,8 @@ def register_user(request):
 
             login(request, user)
             return redirect('home')
-        
-    else:
-        return render(request, 'signup.html', {
+        else:
+            return render(request, 'signup.html', {
             'error': True
         })
+    return render(request, 'signup.html')
