@@ -1,20 +1,40 @@
 from django.shortcuts import render
+from django.db.models import Q
 from profiles.models import Userprofile
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 from django.http import Http404
-from .models import Post
+from .models import Post, Category
 
 # Create your views here.
 def home(request):
     if request.user.is_authenticated:
+        filter_query = request.GET.get('search') if request.GET.get('search') != None else ''
+        # Search Engine
+        posts = Post.objects.filter(
+            Q(title__icontains=filter_query) |
+            Q(author__username__icontains=filter_query) |
+            Q(category__icontains=filter_query) |
+            Q(body__icontains=filter_query)            
+        )
+
         profile = Userprofile.objects.get(person=request.user)
-        posts = Post.objects.all()
+        categ = Category.objects.all()
+        # posts = Post.objects.all()
         return render(request, 'index.html', {
             'posts': posts,
             'profile': profile,
         })
     else:
-        posts = Post.objects.all()
+        filter_query = request.GET.get('search') if request.GET.get('search') != None else ''
+        # Search Engine
+        posts = Post.objects.filter(
+            Q(title__icontains=filter_query) |
+            Q(author__username__icontains=filter_query) |
+            Q(category__icontains=filter_query) |
+            Q(body__icontains=filter_query) 
+            
+        )
+        # posts = Post.objects.all()
         return render(request, 'index.html', {
             'posts': posts,
         })
