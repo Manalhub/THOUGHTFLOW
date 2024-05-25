@@ -7,5 +7,10 @@ class Userprofile(models.Model):
     talks_about = models.CharField(max_length=250, default='anything')
     avatar = models.ImageField(upload_to='profile_photos', default='user.jpg')
 
+    @property
+    def avatar_url(self):
+        if self.avatar and hasattr(self.avatar, 'url'):
+            return self.avatar.url
+
     def __str__(self):
         return f'Profile of {self.person.first_name} last logged in at {self.person.last_login}'

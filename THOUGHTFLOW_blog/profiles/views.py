@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.models import User
+from base.models import Post
 from .models import Userprofile
 from django.utils.datastructures import MultiValueDictKeyError
 
@@ -69,3 +70,13 @@ def register_user(request):
             'error': True
         })
     return render(request, 'signup.html')
+
+
+def user_profile(request, username, id):
+    user = User.objects.get(username=username, id=id)
+    posts = Post.objects.filter(author=user)
+    profile = Userprofile.objects.get(person=user)
+    return render(request, 'profile.html', {
+        'profile' : profile,
+        'posts' : posts,
+    })
