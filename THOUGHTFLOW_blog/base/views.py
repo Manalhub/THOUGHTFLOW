@@ -9,12 +9,14 @@ from .models import Post, Category
 # Homepage
 def post_categories(request,category):
     posts = Post.objects.filter(category=category)            
+    recent_posts = Post.objects.all()[0:5]            
 
     # profile = Userprofile.objects.get(person=request.user)
     categ = Category.objects.all()
     # posts = Post.objects.all()
     return render(request, 'index.html', {
         'posts': posts,
+        'recent_posts': recent_posts,
         #'profile': profile,
         'categ' : categ,
         })
@@ -32,6 +34,7 @@ def home(request):
             Q(body__icontains=filter_query)            
         )
 
+        recent_posts = Post.objects.all()[0:5]            
         profile = Userprofile.objects.get(person=request.user)
         categ = Category.objects.all()
         # posts = Post.objects.all()
@@ -39,6 +42,7 @@ def home(request):
             'posts': posts,
             'profile': profile,
             'categ' : categ,
+            'recent_posts': recent_posts,
         })
     else:
         filter_query = request.GET.get('search') if request.GET.get('search') != None else ''
@@ -50,10 +54,13 @@ def home(request):
             Q(body__icontains=filter_query) 
             
         )
-        categ = Category.objects.all() 
+        categ = Category.objects.all()
+        recent_posts = Post.objects.all()[0:5]
+        
         # posts = Post.objects.all()
         return render(request, 'index.html', {
             'posts': posts,
+            'recent_posts': recent_posts,
             'categ': categ,
         })
 # read a post    
