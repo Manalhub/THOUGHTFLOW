@@ -234,8 +234,8 @@
           >
         </div>
         {% empty %}
-        <h1 class="text-emerald-500 font-bold text-5xl">
-          There are no posts in this category
+        <h1 class="text-red-500 font-bold text-5xl">
+          No posts found in this category..
         </h1>
         {% endfor %}
       </section>
@@ -284,7 +284,7 @@
               aria-expanded="true"
               aria-haspopup="true"
             >
-              Filter Posts by Categories
+              Search by Categories
               <svg
                 class="-mr-1 h-5 w-5 text-gray-300"
                 viewBox="0 0 20 20"
@@ -309,7 +309,7 @@
             tabindex="-1"
           >
             <div class="py-1 grid grid-cols-2 md:grid-cols-3" role="none">
-              {% for category in existing_categories %}
+              {% for category in categ %}
               <a
                 href="{% url 'post_categories' category %}"
                 class="text-gray-700 block px-4 py-2 text-sm"

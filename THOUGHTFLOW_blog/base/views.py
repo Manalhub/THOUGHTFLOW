@@ -6,6 +6,21 @@ from django.http import Http404
 from .models import Post, Category
 
 # Create your views here.
+# Homepage
+def post_categories(request,category):
+    posts = Post.objects.filter(category=category)            
+
+    # profile = Userprofile.objects.get(person=request.user)
+    categ = Category.objects.all()
+    # posts = Post.objects.all()
+    return render(request, 'index.html', {
+        'posts': posts,
+        #'profile': profile,
+        'categ' : categ,
+        })
+
+
+
 def home(request):
     if request.user.is_authenticated:
         filter_query = request.GET.get('search') if request.GET.get('search') != None else ''
@@ -23,6 +38,7 @@ def home(request):
         return render(request, 'index.html', {
             'posts': posts,
             'profile': profile,
+            'categ' : categ,
         })
     else:
         filter_query = request.GET.get('search') if request.GET.get('search') != None else ''
@@ -34,11 +50,13 @@ def home(request):
             Q(body__icontains=filter_query) 
             
         )
+        categ = Category.objects.all() 
         # posts = Post.objects.all()
         return render(request, 'index.html', {
             'posts': posts,
+            'categ': categ,
         })
-    
+# read a post    
 def read_post(request, id, slug):
     
     try:
@@ -48,5 +66,5 @@ def read_post(request, id, slug):
     
 
     return render(request, 'post.html', {
-              'post': post,    
+              'post': post,  
     })
