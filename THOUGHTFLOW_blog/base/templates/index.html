@@ -33,7 +33,7 @@
                             {% if user.is_authenticated %}
                             <a href="create_post.html" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium create-post-btn hover-crayon" aria-current="page">Create Post</a>
                             {% else %}
-                            <a href="login.html" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Login</a>
+                            <a href="{% url 'login' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Login</a>
                             <a href="signup.html" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Signup</a>
                             {% endif %}
                         </div>
@@ -57,8 +57,12 @@
                             </div>
                             <div class="absolute right-0 z-20 mt-2 w-48 transform hidden transition ease-out duration-100 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                                 <!--Profile Dropdown Menu-->
-                                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                                <a href="profile.html" class="block px-4 py-2 text-sm text-gray-700" 
+                                   role="menuitem" tabindex="-1" 
+                                   id="user-menu-item-0">Your Profile</a>
+                                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700"
+                                   role="menuitem" tabindex="-1" 
+                                   id="user-menu-item-2">Sign out</a>
                             </div>
                         </div>
                         {% endif %}
@@ -82,7 +86,7 @@
                 {% if user.is_authenticated %}
                 <a href="create_post.html" class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium create-post-btn hover-crayon">Create Post</a>
                 {% else %}
-                <a href="login.html" class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Login</a>
+                <a href="{% url 'login' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Login</a>
                 <a href="register.html" class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Signup</a>
                 {% endif %}
             </div>
@@ -103,7 +107,7 @@
                 </div>
                 <div class="mt-3 space-y-1 px-2">
                     <a href="profile.html" class="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:bg-gray-700 hover:text-white">Your Profile</a>
-                    <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:bg-gray-700 hover:text-white">Sign out</a>
+                    <a href="{% url 'logout' %}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:bg-gray-700 hover:text-white">Sign out</a>
                 </div>
             </div>
             {% endif %}
@@ -123,7 +127,7 @@
           class="w-full h-fit lg:w-[48%] rounded-sm shadow-md bg-white flex flex-col p-2"
         >
           <h2 class="font-semibold text-lg">
-            {{ post.title|truncatewords:10 }}
+            {{ post.title|truncatewords:8 }}
           </h2>
           <!-- Author, date, comments -->
           <div class="w-full py-2 text-sm text-gray-600 flex justify-between">
@@ -163,7 +167,7 @@
                 />
               </svg>
 
-              <p>{{ post.created|date:"M. d, Y" }}</p>
+              <p>{{ post.created|date:"d M Y" }}</p>
             </div>
             <!-- Comments -->
             <div class="flex">
@@ -188,7 +192,7 @@
           <div class="w-full flex gap-2 justify-between">
             <img
               class="w-20 h-20"
-              src="{{post.image_url|default_if_none:'media/blog_images/default_blog_image.jpg'}}"
+              src="{{post.images_url|default_if_none:'images/bg_img/default_bg_img.jpg'}}"
               alt=""
               srcset=""
             />
@@ -374,7 +378,7 @@
               <div class="w-full flex gap-2 justify-between">
                 <img
                   class="w-20 h-20"
-                  src="{{post.image_url|default_if_none:'media/blog_images/default_blog_image.jpg'}}"
+                  src="{{post.media_url|default_if_none:'images/bg_img/default_bg_img.jpg'}}"
                   alt=""
                   srcset=""
                 />
