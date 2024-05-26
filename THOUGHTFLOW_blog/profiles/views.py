@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from base.models import Post
 from .models import Userprofile
 from django.utils.datastructures import MultiValueDictKeyError
+from django.contrib.auth.decorators import login_required
+from profiles.forms import UserPForm
 
 # Create your views here.
 def user_login(request):
@@ -79,4 +81,21 @@ def user_profile(request, username, id):
     return render(request, 'profile.html', {
         'profile' : profile,
         'posts' : posts,
+    })
+
+@login_required(login_url='login')
+def update_profile(request, username, id):
+    user = User.objects.get(username=username, id=id)
+    profile = Userprofile.objects.get(person=user)
+    if request.method == 'POST':
+        form = UserPForm(request.POST, instance=profile)
+
+        if form.is_valid():
+            form.save()
+            return redirect('profile', username=user.username, id=user.id)
+    else:
+        form = UserPForm(instance=profile)
+    return render(request, 'update_profile.html',{
+        'form' : form,
+        'profile' : profile,
     })
