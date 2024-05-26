@@ -68,12 +68,15 @@ def read_post(request, id, slug):
     
     try:
         post = Post.objects.get(id=id, slug=slug)
+        similar_posts = Post.objects.filter(category=post.category)
     except Post.DoesNotExist:
         raise Http404("Post does not exist")
     
 
     return render(request, 'post.html', {
-              'post': post,  
+        'post': post,
+        'similar_posts': similar_posts,
+
     })
 
 #Update post
