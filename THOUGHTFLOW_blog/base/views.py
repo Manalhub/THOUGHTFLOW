@@ -76,7 +76,7 @@ def read_post(request, id, slug):
               'post': post,  
     })
 
-#update post
+#Update post
 def update_post(request, id):
     post = Post.objects.get(id=id)
     if request.method == 'POST':
@@ -90,4 +90,16 @@ def update_post(request, id):
     return render(request, 'update_post.html', {
         'form':form,
         'post':post,
+    })
+
+#Delete post
+def delete_post(request, id):
+    post = Post.objects.get(id=id)
+    if request.method == 'POST':
+        post.delete()
+        return redirect('profile', username=post.author.username,
+        id=post.author.id)
+    return render(request, 'delete.html', {
+        'item':post,
+        'type': 'post',
     })

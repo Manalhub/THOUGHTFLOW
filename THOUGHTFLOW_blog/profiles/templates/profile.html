@@ -377,7 +377,7 @@
                 </a>
                 <!-- Delete Post -->
                 <a
-                  href="delete_post"
+                  href="{% url 'delete_post' post.id %}"
                   class="text-red-600 p-2 rounded-xl hover:bg-red-100"
                 >
                   <svg
