@@ -5,7 +5,7 @@ from base.models import Post
 from .models import Userprofile
 from django.utils.datastructures import MultiValueDictKeyError
 from django.contrib.auth.decorators import login_required
-from profiles.forms import UserPForm
+from .models import Userprofile
 
 # Create your views here.
 def user_login(request):
@@ -99,3 +99,4 @@ def update_profile(request, username, id):
         'form' : form,
         'profile' : profile,
     })
+

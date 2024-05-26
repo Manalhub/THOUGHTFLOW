@@ -358,7 +358,7 @@
               <div class="text-gray-400 flex gap-2">
                 <!-- Edit Post -->
                 <a
-                  href="update_post"
+                  href="{% url 'update_post' post.id %}"
                   class="text-emerald-600 rounded-xl hover:bg-emerald-100 p-2"
                   ><svg
                     xmlns="http://www.w3.org/2000/svg"

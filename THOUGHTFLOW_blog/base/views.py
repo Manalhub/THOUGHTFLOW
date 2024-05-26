@@ -1,7 +1,7 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.db.models import Q
+from base.forms import POSTForm
 from profiles.models import Userprofile
-from django.shortcuts import render
 from django.http import Http404
 from .models import Post, Category
 
@@ -74,4 +74,20 @@ def read_post(request, id, slug):
 
     return render(request, 'post.html', {
               'post': post,  
+    })
+
+#update post
+def update_post(request, id):
+    post = Post.objects.get(id=id)
+    if request.method == 'POST':
+        form = POSTForm(request.POST, instance=post)
+        if form.is_valid():
+            form.save()
+            return redirect('profile', username=post.author.username,
+            id=post.author.id)
+    else:
+        form = POSTForm(instance=post)
+    return render(request, 'update_post.html', {
+        'form':form,
+        'post':post,
     })
