@@ -19,11 +19,19 @@ class Post(models.Model):
 
     @property
     def images_url(self):
-        if self.image and hasattr(self.image, 'url'):
-            return self.image.url
+        try:
+            if self.image and hasattr(self.image, 'url'):
+                return self.image.url
+        except Exception as e:
+            return None
         
+
     def get_absolute_url(self):
-        return reverse('read_post', args=[str(self.id), self.slug])
+        try:
+            return reverse('read_post', args=[str(self.id), self.slug])
+        except Exception as e:
+            return '/' 
+      
 
     class Meta:
         ordering = ['-created']
@@ -39,14 +47,13 @@ class Category(models.Model):
         return self.title
     
 class Comment(models.Model):
-    id = models.UUIDField(primary_key=True, max_length=15,
-    editable=False, default=uuid.uuid4)
+    id = models.UUIDField(primary_key=True, editable=False, default=uuid.uuid4)
     author = models.CharField(max_length=80)
     comment_p = models.ForeignKey(Post, on_delete=models.CASCADE,
     related_name='comments')
     body = models.TextField()
     created = models.DateTimeField(auto_now_add=True)
-    eddited = models.DateTimeField(auto_now=True)
+    edited = models.DateTimeField(auto_now=True)
     signedup_user = models.ForeignKey(User, on_delete=models.CASCADE,
     null=True, blank=True)
 
