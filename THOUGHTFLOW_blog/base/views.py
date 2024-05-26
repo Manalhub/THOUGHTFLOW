@@ -4,6 +4,9 @@ from base.forms import POSTForm
 from profiles.models import Userprofile
 from django.http import Http404
 from .models import Post, Category
+from django.utils.datastructures import MultiValueDictKeyError
+from django.utils.text import slugify
+
 
 # Create your views here.
 # Homepage
@@ -63,7 +66,40 @@ def home(request):
             'recent_posts': recent_posts,
             'categ': categ,
         })
-# read a post    
+    
+# CREATE POST
+def create_post(request):
+    categories = Category.objects.all()
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        author = request.user
+        body = request.POST.get('body')
+        category = request.POST.get('category')
+        try: 
+            image = request.FILES['post-image']
+        except MultiValueDictKeyError:
+            image = None
+
+        slug = slugify(title)
+
+        post = Post(
+            author=author,
+            title=title,
+            slug=slug,
+            body=body,
+            image=image,
+            category=category,
+        )
+        post.save()
+        return redirect('home')
+    return render(request, 'create_post.html', {
+        'categories':categories
+    })
+
+
+
+
+# READ post    
 def read_post(request, id, slug):
     
     try:
