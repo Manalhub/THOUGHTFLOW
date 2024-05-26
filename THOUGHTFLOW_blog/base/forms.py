@@ -1,5 +1,5 @@
 from django.forms import ModelForm
-from .models import Post
+from .models import Comment, Post
 
 class POSTForm(ModelForm):
     def __init__(self, *args, **kwargs):
@@ -22,4 +22,18 @@ class POSTForm(ModelForm):
             'about': ('Write something about you'),
             'avatar': ('Profile Photo'),
             'talks_about': ('Topics you talks about')
+        }
+
+class COMForm(ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ModelForm, self).__init__(*args, **kwargs)
+        self.fields['body'].widget.attrs.update(
+            {'class': 'mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-emeral-400 focus:border-emerald-300' }
+        )
+        
+    class Meta:
+        model = Comment
+        fields = ['body']
+        labels = {
+            'text': ('Comment'),
         }

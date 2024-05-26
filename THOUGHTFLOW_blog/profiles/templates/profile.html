@@ -21,7 +21,7 @@
             <div class="hidden md:block">
               <div class="ml-10 flex items-baseline space-x-4">
                 <a
-                  href="create_post.html"
+                  href="{% url 'create_post' %}"
                   class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium"
                   aria-current="page"
                   >Create Post</a
@@ -116,7 +116,7 @@
       <div class="hidden md:hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
           <a
-            href="create_post.html"
+            href="{% url 'create_post' %}"
             class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
             >Create Post</a
           >
