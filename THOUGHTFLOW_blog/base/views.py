@@ -25,7 +25,6 @@ def post_categories(request,category):
         })
 
 
-
 def home(request):
     if request.user.is_authenticated:
         filter_query = request.GET.get('search') if request.GET.get('search') != None else ''

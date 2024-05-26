@@ -1,9 +1,9 @@
-from django.forms import ModelForm
+from django import forms
 from .models import Comment, Post
 
-class POSTForm(ModelForm):
+class POSTForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ModelForm, self).__init__(*args, **kwargs)
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
         self.fields['title'].widget.attrs.update(
             {'class': 'mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-emeral-400 focus:border-emerald-300' }
         )
@@ -24,9 +24,9 @@ class POSTForm(ModelForm):
             'talks_about': ('Topics you talks about')
         }
 
-class COMForm(ModelForm):
+class COMForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(ModelForm, self).__init__(*args, **kwargs)
+        super(forms.ModelForm, self).__init__(*args, **kwargs)
         self.fields['body'].widget.attrs.update(
             {'class': 'mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-emeral-400 focus:border-emerald-300' }
         )
