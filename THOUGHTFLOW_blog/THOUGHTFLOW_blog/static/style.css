@@ -2045,4 +2045,29 @@ video {
     line-height: 2rem;
   }
 }
-  
+
+/* Add this CSS to your styles.css to enhance the dropdown menu */
+.dropdown-menu {
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  margin-top: 8px;
+  min-width: 12rem;
+  overflow: hidden;
+  position: absolute;
+  right: 0;
+  z-index: 10;
+}
+
+.dropdown-item {
+  display: block;
+  padding: 10px 16px;
+  color: #4a5568;
+  text-decoration: none;
+  transition: background-color 0.3s;
+}
+
+.dropdown-item:hover {
+  background-color: #f7fafc;
+}

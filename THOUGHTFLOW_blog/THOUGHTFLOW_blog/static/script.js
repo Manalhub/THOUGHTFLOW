@@ -27,10 +27,10 @@ try {
 try {
   userMenuBtn.addEventListener("click", () => {
     userMenu.classList.toggle("hidden");
-    userMenu.classList.toggle("scale-100");
-    userMenu.classList.toggle("opacity-100");
-    userMenu.classList.toggle("scale-0");
-    userMenu.classList.toggle("opacity-0");
+    mobileMenu.classList.toggle("scale-100");
+    mobileMenu.classList.toggle("opacity-100");
+    mobileMenu.classList.toggle("scale-0");
+    mobileMenu.classList.toggle("opacity-0");
   });
 } catch (error) {}
 

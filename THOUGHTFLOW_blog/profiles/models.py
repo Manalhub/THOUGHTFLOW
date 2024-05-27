@@ -9,8 +9,11 @@ class Userprofile(models.Model):
 
     @property
     def avatar_url(self):
+        """Return the URL of the user's avatar, or None if not available."""
         if self.avatar and hasattr(self.avatar, 'url'):
             return self.avatar.url
+        return None
 
     def __str__(self):
-        return f'Profile of {self.person.first_name} last logged in at {self.person.last_login}'
+        """Return a string representation of the user profile."""
+        return f'Profile of {self.person.get_full_name()} last logged in at {self.person.last_login}'

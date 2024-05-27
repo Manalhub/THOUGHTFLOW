@@ -56,11 +56,7 @@ def create_post(request):
         author = request.user
         body = request.POST.get('body')
         category = request.POST.get('category')
-        try: 
-            image = request.FILES['post-image']
-        except MultiValueDictKeyError:
-            image = None
-
+        image = request.FILES.get('post-image', None)
         slug = slugify(title)
 
         post = Post(
@@ -73,62 +69,48 @@ def create_post(request):
         )
         post.save()
         return redirect('home')
-    return render(request, 'create_post.html', {
-        'categories':categories
-    })
+    
+    return render(request, 'create_post.html', {'categories': categories})
 
 # READ post    
 def read_post(request, id, slug):
-    
-    try:
-        post = Post.objects.get(id=id, slug=slug)    
-    except Post.DoesNotExist:
-        raise Http404("Post does not exist")
-    
+    post = get_object_or_404(Post, id=id, slug=slug)
     similar_posts = Post.objects.filter(category=post.category)
     post_comments = Comment.objects.filter(comment_p=post)
 
     if request.method == 'POST':
         author = request.POST.get('name')
         body = request.POST.get('comment')
-        
-        if request.user.is_authenticated:
-            new_comment = Comment(
-                author=author,
-                comment_p =post,
-                body=body,
-                signedup_user=request.user,
-            )
-        else:
-            new_comment = Comment(
-                author=author,
-                comment_p=post,
-                body=body,
-                signedup_user=request.user,
-            )
+        signedup_user = request.user if request.user.is_authenticated else None
+
+        new_comment = Comment(
+            author=author,
+            comment_p=post,
+            body=body,
+            signedup_user=signedup_user,
+        )
         new_comment.save()
 
     return render(request, 'post.html', {
         'post': post,
         'similar_posts': similar_posts,
-        'post_comments' : post_comments,
-
+        'post_comments': post_comments,
     })
 
 # Update post
 def update_post(request, id):
-    post = Post.objects.get(id=id)
+    post = get_object_or_404(Post, id=id)
     if request.method == 'POST':
         form = POSTForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
-            return redirect('profile', username=post.author.username,
-            id=post.author.id)
+            return redirect('profile', username=post.author.username, id=post.author.id)
     else:
         form = POSTForm(instance=post)
+    
     return render(request, 'update_post.html', {
-        'form':form,
-        'post':post,
+        'form': form,
+        'post': post,
     })
 
 # Delete post
@@ -143,32 +125,32 @@ def delete_post(request, id):
         'type': 'post',
     })
 
-#DELETE COMMENT
+# DELETE COMMENT
 def delete_comment(request, id):
-    comment = Comment.objects.get(id=id)
+    comment = get_object_or_404(Comment, id=id)
     if request.method == 'POST':
-        post = comment.comment_p
-        post_url = post.get_absolute_url()
+        post_url = comment.comment_p.get_absolute_url()
         comment.delete()
         return redirect(post_url)
-    return render(request, 'delete.html',{
-         'item':comment,
+    
+    return render(request, 'delete.html', {
+        'item': comment,
         'type': 'comment',
     })
 
 # Update Comment
 def update_comment(request, id):
-    comment = Comment.objects.get(id=id)
+    comment = get_object_or_404(Comment, id=id)
     if request.method == 'POST':
         form = COMForm(request.POST, instance=comment)
         if form.is_valid():
             form.save()
-        post = comment.comment_p
-        post_url = post.get_absolute_url()
+        post_url = comment.comment_p.get_absolute_url()
         return redirect(post_url)
     else:
-       form = COMForm(instance=comment) 
-    return render(request, 'update_comment.html',{
-         'form':form,
+        form = COMForm(instance=comment)
+    
+    return render(request, 'update_comment.html', {
+        'form': form,
         'comment': comment,
     })
