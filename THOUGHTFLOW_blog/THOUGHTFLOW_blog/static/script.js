@@ -64,3 +64,7 @@ document.getElementById('id_image').addEventListener('change', function(event) {
       reader.readAsDataURL(file);
   }
 });
+
+res.header("Cache-Control", "no-cache, no-store, must-revalidate");
+res.header("Pragma", "no-cache");
+res.header("Expires", "0");

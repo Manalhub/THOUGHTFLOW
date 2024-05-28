@@ -86,7 +86,7 @@ def update_profile(request, username, id):
     user = get_object_or_404(User, username=username, id=id)
     profile = get_object_or_404(Userprofile, person=user)
     if request.method == 'POST':
-        form = UserPForm(request.POST, instance=profile)
+        form = UserPForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
             form.save()
             return redirect('profile', username=user.username, id=user.id)

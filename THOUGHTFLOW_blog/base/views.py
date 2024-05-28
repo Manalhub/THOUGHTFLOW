@@ -4,9 +4,10 @@ from base.forms import COMForm, POSTForm
 from profiles.models import Userprofile
 from django.http import Http404
 from .models import Post, Category, Comment
+from profiles.models import Userprofile
 from django.utils.datastructures import MultiValueDictKeyError
 from django.utils.text import slugify
-
+from django.contrib.auth.models import User
 
 # Create your views here.
 # Homepage
@@ -78,10 +79,16 @@ def read_post(request, id, slug):
     similar_posts = Post.objects.filter(category=post.category)
     post_comments = Comment.objects.filter(comment_p=post)
 
+    
+    if request.user.is_authenticated:
+        profile = Userprofile.objects.get(person=request.user)
+    
+    
     if request.method == 'POST':
         author = request.POST.get('name')
         body = request.POST.get('comment')
         signedup_user = request.user if request.user.is_authenticated else None
+        
 
         new_comment = Comment(
             author=author,
@@ -95,6 +102,7 @@ def read_post(request, id, slug):
         'post': post,
         'similar_posts': similar_posts,
         'post_comments': post_comments,
+        'profile': profile,
     })
 
 # Update post
