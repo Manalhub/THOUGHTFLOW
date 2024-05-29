@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
     <link rel="stylesheet" href="{% static 'navbar.css' %}" />
+    <link rel="stylesheet" href="{% static 'post.css' %}" />
     <title>THOUGHTFLOW Blog</title>
   </head>
   <body class="h-14 bg-red-100">
@@ -22,7 +23,6 @@
                           {% if user.is_authenticated %}
                           <a href="{% url 'create_post' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium create-post-btn hover-crayon" aria-current="page">Create Post</a>
                           {% else %}
-
                           <a href="{% url 'login' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Login</a>
                           <a href="{% url 'register' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Signup</a>
                           {% endif %}
@@ -216,11 +216,19 @@
               {{ post.body|truncatewords:12 }}
             </p>
           </div>
-          <a
-            href="{{ post.get_absolute_url }}"
-            class="w-fit mt-2 text-white bg-gray-800 px-3 py-1 rounded-sm"
-            >Continue Reading...</a
-          >
+              {% if user.is_authenticated %}
+              <a
+                href="{{ post.get_absolute_url }}"
+                class="w-fit mt-2 text-white bg-gray-800 px-3 py-1 rounded-sm"
+                >Continue Reading...</a
+              >
+              {% else %}
+              <a
+                href="{% url 'login' %}"
+                class="w-fit mt-2 text-white bg-gray-800 px-3 py-1 rounded-sm"
+                >Continue Reading...</a
+              >
+              {% endif %}
         </div>
         {% empty %}
         <h1 class="text-red-500 font-bold text-5xl">
@@ -402,11 +410,19 @@
                   {{ post.body|truncatewords:12 }}
                 </p>
               </div>
+              {% if user.is_authenticated %}
               <a
                 href="{{ post.get_absolute_url }}"
                 class="w-fit mt-2 text-white bg-emerald-600 px-3 py-1 rounded-sm"
                 >Continue Reading...</a
               >
+              {% else %}
+              <a
+                href="{% url 'login' %}"
+                class="w-fit mt-2 text-white bg-emerald-600 px-3 py-1 rounded-sm"
+                >Continue Reading...</a
+              >
+              {% endif %}
             </div>
             {% endfor %}
           </div>

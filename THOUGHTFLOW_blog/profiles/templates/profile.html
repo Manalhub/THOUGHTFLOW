@@ -4,197 +4,127 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'profile.css' %}" />
     <link rel="stylesheet" href="{% static 'style.css' %}" />
-    <title>THOUGHTFLOW Blog | John Doe</title>
+    <title>THOUGHTFLOW Blog</title>
   </head>
   <body class="p-4 bg-gray-200">
     <!-- Navbar -->
-    <nav class="bg-emerald-600 shadow-md">
+    <nav class="bg-red-950 p-4">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="flex h-16 items-center justify-between">
-          <div class="flex items-center">
-            <div class="flex-shrink-0">
-              <a class="text-2xl font-bold text-white" href="{% url 'home' %}"
-                >THOUGHTFLOW</a
-              >
-            </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                <a
-                  href="{% url 'create_post' %}"
-                  class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium"
-                  aria-current="page"
-                  >Create Post</a
-                >
+          <div class="flex h-16 items-center justify-between">
+              <div class="flex items-center">
+                  <div class="flex-shrink-0">
+                      <a class="text-2xl text-white" href="{% url 'home' %}">THOUGHTFLOW</a>
+                  </div>
+                  <div class="hidden md:block">
+                      <div class="ml-10 flex items-baseline space-x-4">
+                          {% if user.is_authenticated %}
+                          <a href="{% url 'create_post' %}" class="text-gray-100 hover:bg-red-900 hover:text-white rounded-md px-3 py-2 text-lg font-medium create-post-btn flex items-center justify-center transition-transform transform hover:scale-105 relative" aria-current="page">
+                            <span>Create Post</span>
+                            <span class="opacity-1 ml-2 transition-opacity duration-300">🖊️</span>
+                          </a>
+                          {% else %}
+
+                          <a href="{% url 'login' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Login</a>
+                          <a href="{% url 'register' %}" class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium">Signup</a>
+                          {% endif %}
+                      </div>
+                  </div>
               </div>
-            </div>
-          </div>
-          <div class="hidden md:block">
-            <div class="ml-4 flex items-center md:ml-6">
-              <!-- Profile dropdown -->
-              <div class="relative ml-3">
-                <div>
-                  <button
-                    type="button"
-                    class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                  >
-                    <span class="absolute -inset-1.5"></span>
-                    <span class="sr-only">Open user menu</span>
-                    {% if profile.avatar %}
-                    <img
-                      class="h-8 w-8 rounded-full"
-                      src="{{ profile.avatar.url }}"
-                      alt="User Profile Picture"
-                    />
-                    {% else %}
-                    <img
-                      class="h-8 w-8 rounded-full"
-                      src="{% static 'user.jpg' %}"
-                      alt="User Profile Picture"
-                    />
-                    {% endif %}
+              <div class="hidden md:block">
+                  <div class="ml-4 flex items-center md:ml-6">
+                      <!-- Profile dropdown -->
+                      <div class="relative ml-3">
+                          <div>
+                              <button type="button" class="relative flex max-w-xs items-center rounded-full bg-red-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-800" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                  <span class="absolute -inset-1.5"></span>
+                                  <span class="sr-only">Open user menu</span>
+                                  {% if profile.avatar %}
+                                  <img class="h-10 w-10 rounded-full" src="{{ profile.avatar.url }}" alt="User Profile Picture">
+                                  {% else %}
+                                  <img class="h-10 w-10 rounded-full" src="{% static 'user.jpg' %}" alt="User Profile Picture">
+                                  {% endif %}
+                              </button>
+                          </div>
+                          <div class="hidden absolute right-0 z-20 mt-2 w-48 origin-top-right transform transition ease-out duration-100 rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" id="user-menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                            <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+              <div class="-mr-2 flex md:hidden">
+                  <!-- Mobile menu button -->
+                  <button type="button" id="toggle-mobile-menu" class="relative inline-flex items-center justify-center rounded-md bg-red-800 p-2 text-gray-400 hover:bg-red-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-red-800" aria-controls="mobile-menu" aria-expanded="false">
+                      <span class="absolute -inset-0.5"></span>
+                      <span class="sr-only">Open main menu</span>
+                      <svg class="block h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"/>
+                      </svg>
                   </button>
-                </div>
-
-                <div
-                  class="absolute right-0 z-20 mt-2 w-48 transform hidden transition ease-out duration-100 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                  role="menu"
-                  id="user-menu"
-                  aria-orientation="vertical"
-                  aria-labelledby="user-menu-button"
-                  tabindex="-1"
-                >
-                  <!--Profile Dropdown Menu-->
-
-                  <a
-                    href="{% url 'logout' %}"
-                    class="block px-4 py-2 text-sm text-gray-700"
-                    role="menuitem"
-                    tabindex="-1"
-                    id="user-menu-item-2"
-                    >Sign out</a
-                  >
-                </div>
               </div>
-            </div>
           </div>
-          <div class="-mr-2 flex md:hidden">
-            <!-- Mobile menu button -->
-            <button
-              type="button"
-              id="toggle-mobile-menu"
-              class="relative inline-flex items-center justify-center rounded-md bg-gray-800 p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-              aria-controls="mobile-menu"
-              aria-expanded="false"
-            >
-              <span class="absolute -inset-0.5"></span>
-              <span class="sr-only">Open main menu</span>
-
-              <svg
-                class="block h-6 w-6"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                />
-              </svg>
-            </button>
-          </div>
-        </div>
       </div>
-
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class="hidden md:hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-          <a
-            href="{% url 'create_post' %}"
-            class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-            >Create Post</a
-          >
-        </div>
-
-        <div class="border-t border-gray-700 pb-3 pt-4">
-          <div class="flex items-center px-5">
-            <div class="flex-shrink-0">
-              {% if profile.avatar.url %}
-              <img
-                class="h-10 w-10 rounded-full"
-                src="{{profile.avatar_url}}"
-                alt=""
-              />
-              {% else %}
-              <img
-                class="h-10 w-10 rounded-full"
-                src="{% static 'user.jpg' %}"
-                alt=""
-              />
-              {% endif %}
-            </div>
-            <div class="ml-3">
-              <div class="text-base font-medium leading-none text-white">
-                {{ profile.person.first_name }} {{ profile.person.last_name }}
-              </div>
-              <div class="text-sm font-medium leading-none text-gray-200">
-                {{ profile.person.email }}
-              </div>
-            </div>
+          <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
+              <a href="{% url 'create_post' %}" class="text-gray-100 hover:bg-red-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium transition duration-300">Create Post</a>
           </div>
-          <div class="mt-3 space-y-1 px-2">
-            <a
-              href="{% url 'logout' %}"
-              class="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:bg-gray-700 hover:text-white"
-              >Sign out</a
-            >
+          <div class="border-t border-red-700 pb-3 pt-4">
+              <div class="flex items-center px-5">
+                  <div class="flex-shrink-0">
+                      {% if profile.avatar.url %}
+                      <img class="h-10 w-10 rounded-full" src="{{profile.avatar_url}}" alt="">
+                      {% else %}
+                      <img class="h-10 w-10 rounded-full" src="{% static 'user.jpg' %}" alt="">
+                      {% endif %}
+                  </div>
+                  <div class="ml-3">
+                      <div class="text-base font-medium leading-none text-white">{{ profile.person.first_name }} {{ profile.person.last_name }}</div>
+                      <div class="text-sm font-medium leading-none text-gray-200">{{ profile.person.email }}</div>
+                  </div>
+              </div>
+              <div class="mt-3 space-y-1 px-2">
+                  <a href="{% url 'logout' %}" class="block rounded-md px-3 py-2 text-base font-medium text-gray-100 hover:bg-red-700 hover:text-white transition duration-300">Sign out</a>
+              </div>
           </div>
-        </div>
       </div>
     </nav>
     <!-- End of Navbar -->
-
-    <main
-      class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:h-[82vh]"
-    >
+      <main
+        class="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:h-[82vh]"
+      >
       <!-- Person Profile -->
-      <section class="bg-white p-1 rounded-lg col-span-1 md:col-span-2">
+      <section class="bg-gray-200 p-4 rounded-lg col-span-1 md:col-span-2">
         <div class="px-4 sm:px-0 flex flex-col justify-around items-center">
-          <h3
-            class="text-xl lg:text-2xl font-semibold leading-7 mb-1 text-emerald-700"
-          >
+         <h3 class="text-2xl lg:text-3xl font-semibold leading-7 mb-4 text-red-900">
             Member Information
-          </h3>
-          {% if profile.avatar %}
-          <img
-            class="w-20 h-20 lg:h-22 lg:w-22 rounded-full"
+         </h3>
+         {% if profile.avatar %}
+         <img
+            class="w-24 h-24 lg:w-28 lg:h-28 rounded-full shadow-lg transition-transform transform hover:scale-110"
             src="{{ profile.avatar.url }}"
             alt="User Profile Picture"
           />
           {% else %}
-          <img
-            class="w-20 h-20 lg:h-20 lg:w-20 rounded-full"
+         <img
+            class="w-24 h-24 lg:w-28 lg:h-28 rounded-full shadow-lg transition-transform transform hover:scale-110"
             src="{% static 'user.jpg' %}"
             alt="Default Profile Picture"
           />
           {% endif %} {% if profile.person == user %}
           <a
             href="{% url 'update_profile' profile.person.username profile.person.id %}"
-            class="px-4 flex gap-2 py-1 border font-semibold mt-5 w-auto ease-in-out duration-500 border-emerald-100 rounded-md text-emerald-600 hover:bg-emerald-600 hover:text-emerald-50"
-            >Edit Profile
+            class="mt-4 px-4 py-2 border font-semibold w-auto border-red-800 rounded-md text-red-800 hover:bg-red-300 hover:text-white transition-colors duration-500"
+          >
+            Edit Profile
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
               viewBox="0 0 24 24"
               stroke-width="1.5"
               stroke="currentColor"
-              class="w-6 h-6"
+              class="w-6 h-6 inline-block ml-2"
             >
               <path
                 stroke-linecap="round"
@@ -205,55 +135,49 @@
           </a>
           {% endif %}
         </div>
-        <div class="mt-2 border-t border-gray-100">
-          <dl class="divide-y divide-gray-100">
-            <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">
-                Full name
+        <div class="mt-4 border-t border-red-800">
+          <dl class="divide-y divide-red-800">
+            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-red-800">
+                 Full Name
               </dt>
-              <dd
-                class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
-              >
+              <dd class="mt-1 text-sm leading-6 text-red-700 sm:col-span-2 sm:mt-0">
                 {{ profile.person.first_name }} {{ profile.person.last_name }}
               </dd>
             </div>
 
-            <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">
+            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-red-800">
                 Username
               </dt>
-              <dd
-                class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
-              >
+              <dd class="mt-1 text-sm leading-6 text-red-700 sm:col-span-2 sm:mt-0">
                 {{ profile.person.username }}
               </dd>
             </div>
 
-            <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">
-                Email address
+            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-red-800">
+                Email Address
               </dt>
-              <dd
-                class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
-              >
+              <dd class="mt-1 text-sm leading-6 text-red-700 sm:col-span-2 sm:mt-0">
                 {{ profile.person.email }}
               </dd>
             </div>
-            <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">
-                Talks About
+
+            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-red-800">
+                Interests
               </dt>
-              <dd
-                class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
-              >
+              <dd class="mt-1 text-sm leading-6 text-red-700 sm:col-span-2 sm:mt-0">
                 {{ profile.talks_about }}
               </dd>
             </div>
-            <div class="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-              <dt class="text-sm font-medium leading-6 text-gray-900">About</dt>
-              <dd
-                class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0"
-              >
+
+            <div class="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+              <dt class="text-sm font-medium leading-6 text-red-800">
+                Bio
+              </dt>
+              <dd class="mt-1 text-sm leading-6 text-red-700 sm:col-span-2 sm:mt-0">
                 {{ profile.about }}
               </dd>
             </div>
@@ -265,15 +189,20 @@
       <section class="flex flex-col gap-4 lg:h-[84vh]">
         <!-- Posts -->
         <h1
-          class="bg-emerald-500 w-full font-semibold text-2xl text-center py-2 rounded-sm text-white"
-        >
-          Posts by User
+          class="mt-10 bg-gradient-to-br from-red-700 to-red-800 p-6 shadow-xl
+                 rounded-xl sm:mx-auto sm:w-full sm:max-w-sm transition-shadow 
+                 duration-300 hover:shadow-2xl text-white flex items-center justify-center" 
+        > 
+          <dd class="mt-1 text-lg font-bold text-red-100 sm:col-span-2 sm:mt-0 uppercase">
+            {{ profile.person.username }} Showcase
+          </dd> 
+          
         </h1>
         <div class="flex flex-col gap-3 overflow-scroll scrollbar-hide">
           <!-- Blog Card -->
           {% for post in posts %}
           <div
-            class="w-full h-fit rounded-sm shadow-md bg-white flex flex-col p-2"
+            class="mt-10 bg-gradient-to-br from-red-100 to-red-300 p-6 shadow-xl rounded-xl sm:mx-auto sm:w-full sm:max-w-sm transition-shadow duration-300 hover:shadow-2xl"
           >
             <h2 class="font-semibold text-lg">
               {{post.title|truncatewords:9}}
@@ -289,9 +218,9 @@
                   class="w-5 h-5"
                 >
                   <path
-                    fill-rule="evenodd"
+                    fill-rule="gray"
                     d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
-                    clip-rule="evenodd"
+                    clip-rule="gray"
                   />
                 </svg>
                 <p>{{post.author}}</p>
@@ -339,7 +268,7 @@
             <div class="w-full flex gap-2 justify-between">
               <img
                 class="w-20 h-20"
-                src="{{post.image_url|default_if_none:'media/blog_images/default_blog_image.jpg'}}"
+                src="{{post.images_url|default_if_none:'images/bg_img/default_bg_img.jpg'}}"
                 alt=""
                 srcset=""
               />
@@ -349,17 +278,25 @@
             </div>
 
             <div class="text-gray-400 flex justify-between">
+              {% if user.is_authenticated %}
               <a
                 href="{{ post.get_absolute_url }}"
-                class="w-fit mt-2 text-white bg-emerald-600 px-3 py-1 rounded-sm"
+                class="mt-10 bg-gradient-to-br from-red-600 to-red-900 p-6 shadow-xl rounded-xl sm:mx-auto sm:w-full text-white"
                 >Continue Reading...</a
               >
+              {% else %}
+              <a
+                href="{% url 'login' %}"
+                class="mt-10 bg-gradient-to-br from-red-600 to-red-900 p-6 shadow-xl rounded-xl sm:mx-auto sm:w-full text-white"
+                >Continue Reading...</a
+              >
+              {% endif %}
               {% if user == post.author %}
               <div class="text-gray-400 flex gap-2">
                 <!-- Edit Post -->
                 <a
                   href="{% url 'update_post' post.id %}"
-                  class="text-emerald-600 rounded-xl hover:bg-emerald-100 p-2"
+                  class="text-emerald-900 rounded-xl hover:bg-red-300 p-2"
                   ><svg
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
@@ -378,7 +315,7 @@
                 <!-- Delete Post -->
                 <a
                   href="{% url 'delete_post' post.id %}"
-                  class="text-red-600 p-2 rounded-xl hover:bg-red-100"
+                  class="text-red-800 p-2 rounded-xl hover:bg-red-200"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
