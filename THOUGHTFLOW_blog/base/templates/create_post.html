@@ -4,38 +4,21 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="{% static 'style.css' %}" />
+    <link rel="stylesheet" href="{% static 'crpost.css' %}" />
     <title>THOUGHTFLOW</title>
   </head>
   <body class="bg-gray-200 p-4">
-    <!-- Navbar -->
-    <nav class="bg-emerald-600 shadow-md">
+<!-- Navbar -->
+    <nav class="bg-red-950 p-4 shadow-md">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="flex h-16 items-center justify-between">
           <div class="flex items-center">
             <div class="flex-shrink-0">
-              <a class="text-2xl font-bold text-white" href="{% url 'home' %}"
+              <a class="text-2xl text-white" href="{% url 'home' %}"
                 >THOUGHTFLOW</a
               >
             </div>
-            <div class="hidden md:block">
-              <div class="ml-10 flex items-baseline space-x-4">
-                {% if not user.is_authenticated %}
-
-                <a
-                  href="{% url 'login' %}"
-                  class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium"
-                  aria-current="page"
-                  >Login</a
-                >
-                <a
-                  href="{% url 'register' %}"
-                  class="text-gray-100 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-lg font-medium"
-                  >Signup</a
-                >
-                {% endif %}
-              </div>
-            </div>
+            
           </div>
           <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
@@ -132,35 +115,19 @@
 
       <!-- Mobile menu, show/hide based on menu state. -->
       <div class="hidden md:hidden" id="mobile-menu">
-        <div class="space-y-1 px-2 pb-3 pt-2 sm:px-3">
-          {% if not user.is_authenticated %}
-
-          <a
-            href="{% url 'login' %}"
-            class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-            aria-current="page"
-            >Login</a
-          >
-          <a
-            href="{% url 'register' %}"
-            class="text-gray-100 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
-            >Signup</a
-          >
-          {% endif %}
-        </div>
         {% if user.is_authenticated %}
         <div class="border-t border-gray-700 pb-3 pt-4">
           <div class="flex items-center px-5">
             <div class="flex-shrink-0">
               {% if profile.avatar %}
               <img
-                class="h-8 w-8 rounded-full"
+                class="h-12 w-12 rounded-full"
                 src="{{ profile.avatar.url }}"
                 alt="User Profile Picture"
               />
               {% else %}
               <img
-                class="h-8 w-8 rounded-full"
+                class="h-12 w-12 rounded-full"
                 src="{% static 'user.jpg' %}"
                 alt="User Profile Picture"
               />
@@ -193,86 +160,86 @@
       </div>
     </nav>
     <!-- End of Navbar -->
-
     <!-- New Post Form -->
     <form
       method="post"
       enctype="multipart/form-data"
-      class="bg-white mt-4 p-4 rounded-lg shadow-md w-full md:w-3/5 mx-auto"
+      class="bg-gray-100 mt-4 p-4 rounded-lg shadow-md w-full md:w-3/5 mx-auto transition duration-500"
+>
+  {% csrf_token %}
+  <h2 class="text-2xl font-bold mb-4 text-red-950 transition-transform duration-300">
+      Capture Your Thoughts 📝
+  </h2>
+  <div class="mb-4">
+      <label for="title" class="block text-sm font-medium text-red-900 transition-shadow duration-500"
+      >Title</label
     >
-      {% csrf_token %}
-      <h2 class="text-2xl font-semibold mb-4 text-emerald-600">
-        Create a New Blog Post
-      </h2>
-      <div class="mb-4">
-        <label for="title" class="block text-sm font-medium text-emerald-500"
-          >Title</label
-        >
-        <input
-          type="text"
-          id="title"
-          name="title"
-          required
-          class="mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-emerald-400 focus:border-emerald-300"
-        />
-      </div>
-      <div class="mb-4">
-        <label for="category" class="block text-sm font-medium text-emerald-500"
-          >Select category or type a new one</label
-        >
-        <select
-          name="category"
-          class="mt-1 p-2 border w-full rounded-md focus:outline-none cursor-pointer focus:ring-emerald-400 focus:border-emerald-300"
-          id="category"
-        >
-          <option value="" selected disabled>Select a category</option>
-          {% for category in categories %}
-          <option value="{{ category.title }}">{{ category.title }}</option>
-          {% endfor %}
-        </select>
-      </div>
-      <div class="mb-4">
-        <label for="photo" class="block text-sm font-medium text-emerald-500"
-          >Post Image</label
-        >
-        <div class="mt-2 flex items-center gap-x-3">
-          <input
-            id="post-image"
-            class="cursor-pointer"
-            name="post-image"
-            type="file"
-          />
-        </div>
-      </div>
-      <div class="mb-4">
-        <label for="text" class="block text-sm font-medium text-emerald-500"
-          >Text</label
-        >
-        <textarea
-          id="text"
-          name="body"
-          rows="4"
-          required
-          class="mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-emerald-400 focus:border-emerald-300"
-        ></textarea>
-      </div>
-      <div class="text-right">
-        <a
-          href="{{ request.META.HTTP_REFERER }}"
-          type="button"
-          id="cancelUpdate"
-          class="mt-3 inline-flex w-full justify-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto"
-        >
-          Go back
-        </a>
-        <button
-          type="submit"
-          class="px-4 py-2 bg-emerald-500 text-white rounded-md hover:bg-emerald-600 focus:outline-none focus:ring focus:ring-emerald-400"
-        >
-          Create Post
-        </button>
-      </div>
-    </form>
+    <input
+      type="text"
+      id="title"
+      name="title"
+      required
+      class="mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-red-400 focus:border-red-300 transition duration-500"
+    />
+  </div>
+  <div class="mb-4">
+    <label for="category" class="block text-sm font-medium text-red-900 transition duration-500"
+      >Select a category</label
+    >
+    <select
+      name="category"
+      class="mt-1 p-2 border w-full rounded-md focus:outline-none cursor-pointer focus:ring-red-900 focus:border-red-300 transition duration-500"
+      id="category"
+    >
+      <option value="" selected disabled>Select a category</option>
+      {% for category in categories %}
+      <option value="{{ category.title }}">{{ category.title }}</option>
+      {% endfor %}
+    </select>
+  </div>
+  <div class="mb-4">
+    <label for="photo" class="block text-sm font-medium text-red-900 transition duration-500"
+      >Post Image</label
+    >
+    <div class="mt-2 flex items-center gap-x-3">
+      <input
+        id="post-image"
+        class="cursor-pointer"
+        name="post-image"
+        type="file"
+        class="transition duration-500"
+      />
+    </div>
+  </div>
+  <div class="mb-4">
+    <label for="text" class="block text-sm font-medium text-red-900 transition duration-500"
+      >Content</label
+    >
+    <textarea
+      id="text"
+      name="body"
+      rows="4"
+      required
+      class="mt-1 p-2 border w-full rounded-md focus:outline-none focus:ring-red-400 focus:border-red-300 transition duration-500"
+    ></textarea>
+  </div>
+  <div class="text-right">
+    <a
+      href="{{ request.META.HTTP_REFERER }}"
+      type="button"
+      id="cancelUpdate"
+      class="mt-3 inline-flex w-full justify-center rounded-md bg-gray-300 px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto transition duration-500"
+    >
+      Go back
+    </a>
+    <button
+      type="submit"
+      class="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 focus:outline-none focus:ring focus:ring-red-400 transition duration-500"
+    >
+      Create Post
+    </button>
+  </div>
+</form>
 
     <!-- JS Scripts -->
     <script type="module" src="{% static 'script.js' %}"></script>
