@@ -1,4 +1,3 @@
-```markdown
 # Blog App (THOUGHTFLOW)
 
 A blog application built with Django. This application allows users to create, view, and comment on blog posts.
