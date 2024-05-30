@@ -114,5 +114,7 @@ THOUGHTFLOW_blog/
 ---
 
 Happy coding!
-```
+`
+## Author
 
+This project was created by Manal Rahali.
